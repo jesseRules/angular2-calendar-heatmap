@@ -1,18 +1,17 @@
 // Import dependencies
-import { Component, Input, Output, EventEmitter, ViewChild, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, HostListener, ElementRef } from '@angular/core';
 import moment from 'moment';
-import * as d3 from 'd3/index';
-export var OverviewType = {};
-OverviewType.global = 0;
-OverviewType.year = 1;
-OverviewType.month = 2;
-OverviewType.week = 3;
-OverviewType.day = 4;
-OverviewType[OverviewType.global] = "global";
-OverviewType[OverviewType.year] = "year";
-OverviewType[OverviewType.month] = "month";
-OverviewType[OverviewType.week] = "week";
-OverviewType[OverviewType.day] = "day";
+import * as d3 from 'd3';
+import * as i0 from "@angular/core";
+var _c0 = ["root"];
+export var OverviewType;
+(function (OverviewType) {
+    OverviewType[OverviewType["global"] = 0] = "global";
+    OverviewType[OverviewType["year"] = 1] = "year";
+    OverviewType[OverviewType["month"] = 2] = "month";
+    OverviewType[OverviewType["week"] = 3] = "week";
+    OverviewType[OverviewType["day"] = 4] = "day";
+})(OverviewType || (OverviewType = {}));
 ;
 var CalendarHeatmap = /** @class */ (function () {
     function CalendarHeatmap() {
@@ -20,9 +19,9 @@ var CalendarHeatmap = /** @class */ (function () {
         this.color = '#ff4500';
         this.overview = OverviewType.global;
         /**
-         * Helper function to convert seconds to a human readable format
-         * @param seconds Integer
-         */
+        * Helper function to convert seconds to a human readable format
+        * @param seconds Integer
+        */
         this.formatTime = function (seconds) {
             var hours = Math.floor(seconds / 3600);
             var minutes = Math.floor((seconds - (hours * 3600)) / 60);
@@ -39,40 +38,40 @@ var CalendarHeatmap = /** @class */ (function () {
             return time;
         };
         /**
-         * Function for project label
-         */
+        * Function for project label
+        */
         this.projectLabel = function (project) { return project; };
         /**
-         * Function for year label
-         */
+        * Function for year label
+        */
         this.yearLabel = function (date) { return moment(date).year().toString(); };
         /**
-         * Function for month label
-         */
+        * Function for month label
+        */
         this.monthLabel = function (date) { return date.toLocaleDateString('en-us', { month: 'short' }); };
         /**
-         * Function for week label
-         */
+        * Function for week label
+        */
         this.weekLabel = function (number) { return 'Week ' + number; };
         /**
-         * Function for day of week label
-         */
+        * Function for day of week label
+        */
         this.dayOfWeekLabel = function (date) { return moment(date).format('dddd')[0]; };
         /**
-         * Function for time label
-         */
+        * Function for time label
+        */
         this.timeLabel = function (date) { return moment(date).format('HH:mm'); };
         this.buildGlobalTooltip = function (d) {
             // Construct tooltip
-            var /** @type {?} */ tooltip_html = '';
-            var /** @type {?} */ isDateFuture = moment(d.date) > moment();
+            var tooltip_html = '';
+            var isDateFuture = moment(d.date) > moment();
             tooltip_html += '<div><span><strong>Total time ' + isDateFuture ? 'planned' : 'tracked' + ':</strong></span>';
-            var /** @type {?} */ sec = d.total;
-            var /** @type {?} */ days = Math.floor(sec / 86400);
+            var sec = d.total;
+            var days = Math.floor(sec / 86400);
             if (days > 0) {
                 tooltip_html += '<span>' + (days === 1 ? '1 day' : days + ' days') + '</span></div>';
             }
-            var /** @type {?} */ hours = Math.floor((sec - (days * 86400)) / 3600);
+            var hours = Math.floor((sec - (days * 86400)) / 3600);
             if (hours > 0) {
                 if (days > 0) {
                     tooltip_html += '<div><span></span><span>' + (hours === 1 ? '1 hour' : hours + ' hours') + '</span></div>';
@@ -81,7 +80,7 @@ var CalendarHeatmap = /** @class */ (function () {
                     tooltip_html += '<span>' + (hours === 1 ? '1 hour' : hours + ' hours') + '</span></div>';
                 }
             }
-            var /** @type {?} */ minutes = Math.floor((sec - (days * 86400) - (hours * 3600)) / 60);
+            var minutes = Math.floor((sec - (days * 86400) - (hours * 3600)) / 60);
             if (minutes > 0) {
                 if (days > 0 || hours > 0) {
                     tooltip_html += '<div><span></span><span>' + (minutes === 1 ? '1 minute' : minutes + ' minutes') + '</span></div>';
@@ -93,21 +92,21 @@ var CalendarHeatmap = /** @class */ (function () {
             tooltip_html += '<br />';
             // Add summary to the tooltip
             if (d.summary.length <= 5) {
-                for (var /** @type {?} */ i = 0; i < d.summary.length; i++) {
+                for (var i = 0; i < d.summary.length; i++) {
                     tooltip_html += '<div><span><strong>' + d.summary[i].name + '</strong></span>';
                     tooltip_html += '<span>' + _this.formatTime(d.summary[i].value) + '</span></div>';
                 }
                 ;
             }
             else {
-                for (var /** @type {?} */ i = 0; i < 5; i++) {
+                for (var i = 0; i < 5; i++) {
                     tooltip_html += '<div><span><strong>' + d.summary[i].name + '</strong></span>';
                     tooltip_html += '<span>' + _this.formatTime(d.summary[i].value) + '</span></div>';
                 }
                 ;
                 tooltip_html += '<br />';
-                var /** @type {?} */ other_projects_sum = 0;
-                for (var /** @type {?} */ i = 5; i < d.summary.length; i++) {
+                var other_projects_sum = 0;
+                for (var i = 5; i < d.summary.length; i++) {
                     other_projects_sum = +d.summary[i].value;
                 }
                 ;
@@ -118,8 +117,8 @@ var CalendarHeatmap = /** @class */ (function () {
         };
         this.buildYearTooltip = function (d) {
             // Construct tooltip
-            var /** @type {?} */ isDateFuture = moment(d.date) > moment();
-            var /** @type {?} */ tooltip_html = '';
+            var isDateFuture = moment(d.date) > moment();
+            var tooltip_html = '';
             tooltip_html += '<div class="header"><strong>' + (d.total ? _this.formatTime(d.total) : 'No time') + isDateFuture ? 'planned' : 'tracked' + ' </strong></div>';
             tooltip_html += '<div>on ' + moment(d.date).format('dddd, MMM Do YYYY') + '</div><br>';
             // Add summary to the tooltip
@@ -131,8 +130,8 @@ var CalendarHeatmap = /** @class */ (function () {
         };
         this.buildMonthTooltip = function (d) {
             // Construct tooltip
-            var /** @type {?} */ isDateFuture = moment(d[1]) > moment();
-            var /** @type {?} */ tooltip_html = '';
+            var isDateFuture = moment(d[1]) > moment();
+            var tooltip_html = '';
             tooltip_html += '<div class="header"><strong>' + d[0].name + '</strong></div><br>';
             tooltip_html += '<div><strong>' + (d[0].value ? _this.formatTime(d[0].value) : 'No time') + isDateFuture ? 'planned' : 'tracked' + ' </strong></div>';
             tooltip_html += '<div>on ' + moment(d[1]).format('dddd, MMM Do YYYY') + '</div>';
@@ -140,8 +139,8 @@ var CalendarHeatmap = /** @class */ (function () {
         };
         this.buildWeekTooltip = function (d) {
             // Construct tooltip
-            var /** @type {?} */ isDateFuture = moment(d[1]) > moment();
-            var /** @type {?} */ tooltip_html = '';
+            var isDateFuture = moment(d[1]) > moment();
+            var tooltip_html = '';
             tooltip_html += '<div class="header"><strong>' + d[0].name + '</strong></div><br>';
             tooltip_html += '<div><strong>' + (d[0].value ? _this.formatTime(d[0].value) : 'No time') + isDateFuture ? 'planned' : 'tracked' + ' </strong></div>';
             tooltip_html += '<div>on ' + moment(d[1]).format('dddd, MMM Do YYYY') + '</div>';
@@ -149,8 +148,8 @@ var CalendarHeatmap = /** @class */ (function () {
         };
         this.buildDayTooltip = function (d) {
             // Construct tooltip
-            var /** @type {?} */ isDateFuture = moment(d.date) > moment();
-            var /** @type {?} */ tooltip_html = '';
+            var isDateFuture = moment(d.date) > moment();
+            var tooltip_html = '';
             tooltip_html += '<div class="header"><strong>' + d.name + '</strong><div><br>';
             tooltip_html += '<div><strong>' + (d.value ? _this.formatTime(d.value) : 'No time') + isDateFuture ? 'planned' : 'tracked' + ' </strong></div>';
             tooltip_html += '<div>on ' + moment(d.date).format('dddd, MMM Do YYYY HH:mm') + '</div>';
@@ -158,6 +157,7 @@ var CalendarHeatmap = /** @class */ (function () {
         };
         this.handler = new EventEmitter();
         this.onChange = new EventEmitter();
+        // Defaults
         this.gutter = 5;
         this.item_gutter = 1;
         this.width = 1000;
@@ -167,14 +167,15 @@ var CalendarHeatmap = /** @class */ (function () {
         this.max_block_height = 20;
         this.transition_duration = 500;
         this.in_transition = false;
+        // Tooltip defaults
         this.tooltip_width = 250;
         this.tooltip_padding = 15;
+        // Overview defaults
         this.history = [OverviewType.global];
         this.selected = {};
     }
     /**
      * Check if data is available
-     * @return {?}
      */
     CalendarHeatmap.prototype.ngOnChanges = function () {
         if (!this.data) {
@@ -188,10 +189,9 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Get hold of the root element and append our svg
-     * @return {?}
      */
     CalendarHeatmap.prototype.ngAfterViewInit = function () {
-        var /** @type {?} */ element = this.element.nativeElement;
+        var element = this.element.nativeElement;
         // Initialize svg element
         this.svg = d3.select(element)
             .append('svg')
@@ -212,21 +212,19 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Utility function to get number of complete weeks in a year
-     * @return {?}
      */
     CalendarHeatmap.prototype.getNumberOfWeeks = function () {
-        var /** @type {?} */ dayIndex = Math.round((+moment() - +moment().subtract(1, 'year').startOf('week')) / 86400000);
-        var /** @type {?} */ colIndex = Math.trunc(dayIndex / 7);
-        var /** @type {?} */ numWeeks = colIndex + 1;
+        var dayIndex = Math.round((+moment() - +moment().subtract(1, 'year').startOf('week')) / 86400000);
+        var colIndex = Math.trunc(dayIndex / 7);
+        var numWeeks = colIndex + 1;
         return numWeeks;
     };
     ;
     /**
      * Utility funciton to calculate chart dimensions
-     * @return {?}
      */
     CalendarHeatmap.prototype.calculateDimensions = function () {
-        var /** @type {?} */ element = this.element.nativeElement;
+        var element = this.element.nativeElement;
         this.width = element.clientWidth < 1000 ? 1000 : element.clientWidth;
         this.item_size = ((this.width - this.label_padding) / this.getNumberOfWeeks() - this.gutter);
         this.height = this.label_padding + 7 * (this.item_size + this.gutter);
@@ -235,8 +233,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Recalculate dimensions on window resize events
-     * @param {?} event
-     * @return {?}
      */
     CalendarHeatmap.prototype.onResize = function (event) {
         this.calculateDimensions();
@@ -247,13 +243,12 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Helper function to check for data summary
-     * @return {?}
      */
     CalendarHeatmap.prototype.updateDataSummary = function () {
         // Get daily summary if that was not provided
         if (this.data[0] && !this.data[0].summary) {
             this.data.map(function (d) {
-                var /** @type {?} */ summary = d.details.reduce(function (uniques, project) {
+                var summary = d.details.reduce(function (uniques, project) {
                     if (!uniques[project.name]) {
                         uniques[project.name] = {
                             'value': project.value
@@ -264,7 +259,7 @@ var CalendarHeatmap = /** @class */ (function () {
                     }
                     return uniques;
                 }, {});
-                var /** @type {?} */ unsorted_summary = Object.keys(summary).map(function (key) {
+                var unsorted_summary = Object.keys(summary).map(function (key) {
                     return {
                         'name': key,
                         'value': summary[key].value
@@ -279,7 +274,6 @@ var CalendarHeatmap = /** @class */ (function () {
     };
     /**
      * Draw the chart based on the current overview type
-     * @return {?}
      */
     CalendarHeatmap.prototype.drawChart = function () {
         if (!this.svg || !this.data || !this.selected) {
@@ -331,7 +325,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Draw global overview (multiple years)
-     * @return {?}
      */
     CalendarHeatmap.prototype.drawGlobalOverview = function () {
         var _this = this;
@@ -340,13 +333,13 @@ var CalendarHeatmap = /** @class */ (function () {
             this.history.push(this.overview);
         }
         // Define start and end of the dataset
-        var /** @type {?} */ start = moment(this.data[0].date).startOf('year');
-        var /** @type {?} */ end = moment(this.data[this.data.length - 1].date).endOf('year');
+        var start = moment(this.data[0].date).startOf('year');
+        var end = moment(this.data[this.data.length - 1].date).endOf('year');
         // Define array of years and total values
-        var /** @type {?} */ data = this.data;
-        var /** @type {?} */ year_data = d3.timeYears(start, end).map(function (d) {
-            var /** @type {?} */ date = moment(d);
-            return /** @type {?} */ ({
+        var data = this.data;
+        var year_data = d3.timeYears(start, end).map(function (d) {
+            var date = moment(d);
+            return {
                 'date': d,
                 'total': data.reduce(function (prev, current) {
                     if (moment(current.date).year() === date.year()) {
@@ -355,9 +348,9 @@ var CalendarHeatmap = /** @class */ (function () {
                     return prev;
                 }, 0),
                 'summary': function () {
-                    var /** @type {?} */ summary = data.reduce(function (summary, d) {
+                    var summary = data.reduce(function (summary, d) {
                         if (moment(d.date).year() === date.year()) {
-                            for (var /** @type {?} */ i = 0; i < d.summary.length; i++) {
+                            for (var i = 0; i < d.summary.length; i++) {
                                 if (!summary[d.summary[i].name]) {
                                     summary[d.summary[i].name] = {
                                         'value': d.summary[i].value,
@@ -370,7 +363,7 @@ var CalendarHeatmap = /** @class */ (function () {
                         }
                         return summary;
                     }, {});
-                    var /** @type {?} */ unsorted_summary = Object.keys(summary).map(function (key) {
+                    var unsorted_summary = Object.keys(summary).map(function (key) {
                         return {
                             'name': key,
                             'value': summary[key].value
@@ -380,17 +373,17 @@ var CalendarHeatmap = /** @class */ (function () {
                         return b.value - a.value;
                     });
                 }(),
-            });
+            };
         });
         // Calculate max value of all the years in the dataset
-        var /** @type {?} */ max_value = d3.max(year_data, function (d) {
+        var max_value = d3.max(year_data, function (d) {
             return d.total;
         });
         // Define year labels and axis
-        var /** @type {?} */ year_labels = d3.timeYears(start, end).map(function (d) {
+        var year_labels = d3.timeYears(start, end).map(function (d) {
             return moment(d);
         });
-        var /** @type {?} */ yearScale = d3.scaleBand()
+        var yearScale = d3.scaleBand()
             .rangeRound([0, this.width])
             .padding(0.05)
             .domain(year_labels.map(function (d) {
@@ -398,7 +391,7 @@ var CalendarHeatmap = /** @class */ (function () {
         }));
         // Add global data items to the overview
         this.items.selectAll('.item-block-year').remove();
-        var /** @type {?} */ item_block = this.items.selectAll('.item-block-year')
+        var item_block = this.items.selectAll('.item-block-year')
             .data(year_data)
             .enter()
             .append('rect')
@@ -413,7 +406,7 @@ var CalendarHeatmap = /** @class */ (function () {
             return 'translate(' + yearScale(moment(d.date).year().toString()) + ',' + _this.tooltip_padding * 2 + ')';
         })
             .attr('fill', function (d) {
-            var /** @type {?} */ color = d3.scaleLinear()
+            var color = d3.scaleLinear()
                 .range(['#ffffff', _this.color || '#ff4500'])
                 .domain([-0.15 * max_value, max_value]);
             return color(d.total) || '#ff4500';
@@ -440,13 +433,13 @@ var CalendarHeatmap = /** @class */ (function () {
                 return;
             }
             // Construct tooltip
-            var /** @type {?} */ tooltip_html = _this.buildGlobalTooltip(d);
+            var tooltip_html = _this.buildGlobalTooltip(d);
             // Calculate tooltip position
-            var /** @type {?} */ x = yearScale(moment(d.date).year().toString()) + _this.tooltip_padding * 2;
+            var x = yearScale(moment(d.date).year().toString()) + _this.tooltip_padding * 2;
             while (_this.width - x < (_this.tooltip_width + _this.tooltip_padding * 5)) {
                 x -= 10;
             }
-            var /** @type {?} */ y = _this.tooltip_padding * 4;
+            var y = _this.tooltip_padding * 4;
             // Show tooltip
             _this.tooltip.html(tooltip_html)
                 .style('left', x + 'px')
@@ -475,7 +468,7 @@ var CalendarHeatmap = /** @class */ (function () {
             if (transition.empty()) {
                 callback();
             }
-            var /** @type {?} */ n = 0;
+            var n = 0;
             transition
                 .each(function () { ++n; })
                 .on('end', function () {
@@ -543,7 +536,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Draw year overview
-     * @return {?}
      */
     CalendarHeatmap.prototype.drawYearOverview = function () {
         var _this = this;
@@ -552,17 +544,17 @@ var CalendarHeatmap = /** @class */ (function () {
             this.history.push(this.overview);
         }
         // Define start and end date of the selected year
-        var /** @type {?} */ start_of_year = moment(this.selected.date).startOf('year');
-        var /** @type {?} */ end_of_year = moment(this.selected.date).endOf('year');
+        var start_of_year = moment(this.selected.date).startOf('year');
+        var end_of_year = moment(this.selected.date).endOf('year');
         // Filter data down to the selected year
-        var /** @type {?} */ year_data = this.data.filter(function (d) {
+        var year_data = this.data.filter(function (d) {
             return start_of_year <= moment(d.date) && moment(d.date) < end_of_year;
         });
         // Calculate max value of the year data
-        var /** @type {?} */ max_value = d3.max(year_data, function (d) {
+        var max_value = d3.max(year_data, function (d) {
             return d.total;
         });
-        var /** @type {?} */ color = d3.scaleLinear()
+        var color = d3.scaleLinear()
             .range(['#ffffff', this.color])
             .domain([-0.15 * max_value, max_value]);
         this.items.selectAll('.item-circle').remove();
@@ -612,13 +604,13 @@ var CalendarHeatmap = /** @class */ (function () {
             _this.overview = OverviewType.day;
             _this.drawChart();
         })
-            .on('mouseover', function (d) {
+            .on('mouseover', function (event, d) {
             if (_this.in_transition) {
                 return;
             }
             // Pulsating animation
-            var /** @type {?} */ circle = d3.select(d3.event.currentTarget);
-            var /** @type {?} */ repeat = function () {
+            var circle = d3.select(event.currentTarget);
+            var repeat = function () {
                 circle.transition()
                     .duration(_this.transition_duration)
                     .ease(d3.easeLinear)
@@ -649,13 +641,13 @@ var CalendarHeatmap = /** @class */ (function () {
             };
             repeat();
             // Construct tooltip
-            var /** @type {?} */ tooltip_html = _this.buildYearTooltip(d);
+            var tooltip_html = _this.buildYearTooltip(d);
             // Calculate tooltip position
-            var /** @type {?} */ x = _this.calcItemX(d, start_of_year) + _this.item_size / 2;
+            var x = _this.calcItemX(d, start_of_year) + _this.item_size / 2;
             if (_this.width - x < (_this.tooltip_width + _this.tooltip_padding * 3)) {
                 x -= _this.tooltip_width + _this.tooltip_padding * 2;
             }
-            var /** @type {?} */ y = _this.calcItemY(d) + _this.item_size / 2;
+            var y = _this.calcItemY(d) + _this.item_size / 2;
             // Show tooltip
             _this.tooltip.html(tooltip_html)
                 .style('left', x + 'px')
@@ -665,12 +657,12 @@ var CalendarHeatmap = /** @class */ (function () {
                 .ease(d3.easeLinear)
                 .style('opacity', 1);
         })
-            .on('mouseout', function () {
+            .on('mouseout', function (event) {
             if (_this.in_transition) {
                 return;
             }
             // Set circle radius back to what it's supposed to be
-            d3.select(d3.event.currentTarget).transition()
+            d3.select(event.currentTarget).transition()
                 .duration(_this.transition_duration / 2)
                 .ease(d3.easeLinear)
                 .attr('x', function (d) {
@@ -701,7 +693,7 @@ var CalendarHeatmap = /** @class */ (function () {
             if (transition.empty()) {
                 callback();
             }
-            var /** @type {?} */ n = 0;
+            var n = 0;
             transition
                 .each(function () { ++n; })
                 .on('end', function () {
@@ -713,8 +705,8 @@ var CalendarHeatmap = /** @class */ (function () {
             _this.in_transition = false;
         });
         // Add month labels
-        var /** @type {?} */ month_labels = d3.timeMonths(start_of_year.toDate(), end_of_year.toDate());
-        var /** @type {?} */ monthScale = d3.scaleLinear()
+        var month_labels = d3.timeMonths(start_of_year.toDate(), end_of_year.toDate());
+        var monthScale = d3.scaleLinear()
             .range([0, this.width])
             .domain([0, month_labels.length]);
         this.labels.selectAll('.label-month').remove();
@@ -735,7 +727,7 @@ var CalendarHeatmap = /** @class */ (function () {
             if (_this.in_transition) {
                 return;
             }
-            var /** @type {?} */ selected_month = moment(d);
+            var selected_month = moment(d);
             _this.items.selectAll('.item-circle')
                 .transition()
                 .duration(_this.transition_duration)
@@ -759,7 +751,7 @@ var CalendarHeatmap = /** @class */ (function () {
                 return;
             }
             // Check month data
-            var /** @type {?} */ month_data = _this.data.filter(function (e) {
+            var month_data = _this.data.filter(function (e) {
                 return moment(d).startOf('month') <= moment(e.date) && moment(e.date) < moment(d).endOf('month');
             });
             // Don't transition if there is no data to show
@@ -778,8 +770,8 @@ var CalendarHeatmap = /** @class */ (function () {
             _this.drawChart();
         });
         // Add day labels
-        var /** @type {?} */ day_labels = d3.timeDays(moment().startOf('week').toDate(), moment().endOf('week').toDate());
-        var /** @type {?} */ dayScale = d3.scaleBand()
+        var day_labels = d3.timeDays(moment().startOf('week').toDate(), moment().endOf('week').toDate());
+        var dayScale = d3.scaleBand()
             .rangeRound([this.label_padding, this.height])
             .domain(day_labels.map(function (d) {
             return moment(d).weekday().toString();
@@ -803,7 +795,7 @@ var CalendarHeatmap = /** @class */ (function () {
             if (_this.in_transition) {
                 return;
             }
-            var /** @type {?} */ selected_day = moment(d);
+            var selected_day = moment(d);
             _this.items.selectAll('.item-circle')
                 .transition()
                 .duration(_this.transition_duration)
@@ -828,7 +820,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Draw month overview
-     * @return {?}
      */
     CalendarHeatmap.prototype.drawMonthOverview = function () {
         var _this = this;
@@ -837,30 +828,30 @@ var CalendarHeatmap = /** @class */ (function () {
             this.history.push(this.overview);
         }
         // Define beginning and end of the month
-        var /** @type {?} */ start_of_month = moment(this.selected.date).startOf('month');
-        var /** @type {?} */ end_of_month = moment(this.selected.date).endOf('month');
+        var start_of_month = moment(this.selected.date).startOf('month');
+        var end_of_month = moment(this.selected.date).endOf('month');
         // Filter data down to the selected month
-        var /** @type {?} */ month_data = this.data.filter(function (d) {
+        var month_data = this.data.filter(function (d) {
             return start_of_month <= moment(d.date) && moment(d.date) < end_of_month;
         });
-        var /** @type {?} */ max_value = d3.max(month_data, function (d) {
+        var max_value = d3.max(month_data, function (d) {
             return d3.max(d.summary, function (d) {
                 return +d.value;
             });
         });
         // Define day labels and axis
-        var /** @type {?} */ day_labels = d3.timeDays(moment().startOf('week').toDate(), moment().endOf('week').toDate());
-        var /** @type {?} */ dayScale = d3.scaleBand()
+        var day_labels = d3.timeDays(moment().startOf('week').toDate(), moment().endOf('week').toDate());
+        var dayScale = d3.scaleBand()
             .rangeRound([this.label_padding, this.height])
             .domain(day_labels.map(function (d) {
             return moment(d).weekday().toString();
         }));
         // Define week labels and axis
-        var /** @type {?} */ week_labels = [start_of_month.clone()];
+        var week_labels = [start_of_month.clone()];
         while (start_of_month.week() !== end_of_month.week()) {
             week_labels.push(start_of_month.add(1, 'week').clone());
         }
-        var /** @type {?} */ weekScale = d3.scaleBand()
+        var weekScale = d3.scaleBand()
             .rangeRound([this.label_padding, this.width])
             .padding(0.05)
             .domain(week_labels.map(function (weekday) {
@@ -868,7 +859,7 @@ var CalendarHeatmap = /** @class */ (function () {
         }));
         // Add month data items to the overview
         this.items.selectAll('.item-block-month').remove();
-        var /** @type {?} */ item_block = this.items.selectAll('.item-block-month')
+        var item_block = this.items.selectAll('.item-block-month')
             .data(month_data)
             .enter()
             .append('g')
@@ -908,10 +899,10 @@ var CalendarHeatmap = /** @class */ (function () {
             _this.overview = OverviewType.day;
             _this.drawChart();
         });
-        var /** @type {?} */ item_width = (this.width - this.label_padding) / week_labels.length - this.gutter * 5;
-        var /** @type {?} */ itemScale = d3.scaleLinear()
+        var item_width = (this.width - this.label_padding) / week_labels.length - this.gutter * 5;
+        var itemScale = d3.scaleLinear()
             .rangeRound([0, item_width]);
-        var /** @type {?} */ item_gutter = this.item_gutter;
+        var item_gutter = this.item_gutter;
         item_block.selectAll('.item-block-rect')
             .data(function (d) {
             return d.summary;
@@ -920,14 +911,14 @@ var CalendarHeatmap = /** @class */ (function () {
             .append('rect')
             .attr('class', 'item item-block-rect')
             .attr('x', function (d) {
-            var /** @type {?} */ total = parseInt(d3.select(this.parentNode).attr('total'));
-            var /** @type {?} */ offset = parseInt(d3.select(this.parentNode).attr('offset'));
+            var total = parseInt(d3.select(this.parentNode).attr('total'));
+            var offset = parseInt(d3.select(this.parentNode).attr('offset'));
             itemScale.domain([0, total]);
             d3.select(this.parentNode).attr('offset', offset + itemScale(d.value));
             return offset;
         })
             .attr('width', function (d) {
-            var /** @type {?} */ total = parseInt(d3.select(this.parentNode).attr('total'));
+            var total = parseInt(d3.select(this.parentNode).attr('total'));
             itemScale.domain([0, total]);
             return Math.max((itemScale(d.value) - item_gutter), 1);
         })
@@ -935,26 +926,26 @@ var CalendarHeatmap = /** @class */ (function () {
             return Math.min(dayScale.bandwidth(), _this.max_block_height);
         })
             .attr('fill', function (d) {
-            var /** @type {?} */ color = d3.scaleLinear()
+            var color = d3.scaleLinear()
                 .range(['#ffffff', _this.color])
                 .domain([-0.15 * max_value, max_value]);
             return color(d.value) || '#ff4500';
         })
             .style('opacity', 0)
-            .on('mouseover', function (d) {
+            .on('mouseover', function (event, d) {
             if (_this.in_transition) {
                 return;
             }
             // Get date from the parent node
-            var /** @type {?} */ date = new Date(d3.select(d3.event.currentTarget.parentNode).attr('date'));
+            var date = new Date(d3.select(event.currentTarget.parentNode).attr('date'));
             // Construct tooltip
-            var /** @type {?} */ tooltip_html = _this.buildMonthTooltip([d, date]);
+            var tooltip_html = _this.buildMonthTooltip([d, date]);
             // Calculate tooltip position
-            var /** @type {?} */ x = weekScale(moment(date).week().toString()) + _this.tooltip_padding;
+            var x = weekScale(moment(date).week().toString()) + _this.tooltip_padding;
             while (_this.width - x < (_this.tooltip_width + _this.tooltip_padding * 3)) {
                 x -= 10;
             }
-            var /** @type {?} */ y = dayScale(moment(date).weekday().toString()) + _this.tooltip_padding;
+            var y = dayScale(moment(date).weekday().toString()) + _this.tooltip_padding;
             // Show tooltip
             _this.tooltip.html(tooltip_html)
                 .style('left', x + 'px')
@@ -983,7 +974,7 @@ var CalendarHeatmap = /** @class */ (function () {
             if (transition.empty()) {
                 callback();
             }
-            var /** @type {?} */ n = 0;
+            var n = 0;
             transition
                 .each(function () { ++n; })
                 .on('end', function () {
@@ -1036,7 +1027,7 @@ var CalendarHeatmap = /** @class */ (function () {
                 return;
             }
             // Check week data
-            var /** @type {?} */ week_data = _this.data.filter(function (e) {
+            var week_data = _this.data.filter(function (e) {
                 return d.startOf('week') <= moment(e.date) && moment(e.date) < d.endOf('week');
             });
             // Don't transition if there is no data to show
@@ -1074,7 +1065,7 @@ var CalendarHeatmap = /** @class */ (function () {
             if (_this.in_transition) {
                 return;
             }
-            var /** @type {?} */ selected_day = moment(d);
+            var selected_day = moment(d);
             _this.items.selectAll('.item-block-month')
                 .transition()
                 .duration(_this.transition_duration)
@@ -1099,7 +1090,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Draw week overview
-     * @return {?}
      */
     CalendarHeatmap.prototype.drawWeekOverview = function () {
         var _this = this;
@@ -1108,27 +1098,27 @@ var CalendarHeatmap = /** @class */ (function () {
             this.history.push(this.overview);
         }
         // Define beginning and end of the week
-        var /** @type {?} */ start_of_week = moment(this.selected.date).startOf('week');
-        var /** @type {?} */ end_of_week = moment(this.selected.date).endOf('week');
+        var start_of_week = moment(this.selected.date).startOf('week');
+        var end_of_week = moment(this.selected.date).endOf('week');
         // Filter data down to the selected week
-        var /** @type {?} */ week_data = this.data.filter(function (d) {
+        var week_data = this.data.filter(function (d) {
             return start_of_week <= moment(d.date) && moment(d.date) < end_of_week;
         });
-        var /** @type {?} */ max_value = d3.max(week_data, function (d) {
+        var max_value = d3.max(week_data, function (d) {
             return d3.max(d.summary, function (d) {
                 return +d.value;
             });
         });
         // Define day labels and axis
-        var /** @type {?} */ day_labels = d3.timeDays(moment().startOf('week').toDate(), moment().endOf('week').toDate());
-        var /** @type {?} */ dayScale = d3.scaleBand()
+        var day_labels = d3.timeDays(moment().startOf('week').toDate(), moment().endOf('week').toDate());
+        var dayScale = d3.scaleBand()
             .rangeRound([this.label_padding, this.height])
             .domain(day_labels.map(function (d) {
             return moment(d).weekday().toString();
         }));
         // Define week labels and axis
-        var /** @type {?} */ week_labels = [start_of_week];
-        var /** @type {?} */ weekScale = d3.scaleBand()
+        var week_labels = [start_of_week];
+        var weekScale = d3.scaleBand()
             .rangeRound([this.label_padding, this.width])
             .padding(0.01)
             .domain(week_labels.map(function (weekday) {
@@ -1136,7 +1126,7 @@ var CalendarHeatmap = /** @class */ (function () {
         }));
         // Add week data items to the overview
         this.items.selectAll('.item-block-week').remove();
-        var /** @type {?} */ item_block = this.items.selectAll('.item-block-week')
+        var item_block = this.items.selectAll('.item-block-week')
             .data(week_data)
             .enter()
             .append('g')
@@ -1176,10 +1166,10 @@ var CalendarHeatmap = /** @class */ (function () {
             _this.overview = OverviewType.day;
             _this.drawChart();
         });
-        var /** @type {?} */ item_width = (this.width - this.label_padding) / week_labels.length - this.gutter * 5;
-        var /** @type {?} */ itemScale = d3.scaleLinear()
+        var item_width = (this.width - this.label_padding) / week_labels.length - this.gutter * 5;
+        var itemScale = d3.scaleLinear()
             .rangeRound([0, item_width]);
-        var /** @type {?} */ item_gutter = this.item_gutter;
+        var item_gutter = this.item_gutter;
         item_block.selectAll('.item-block-rect')
             .data(function (d) {
             return d.summary;
@@ -1188,14 +1178,14 @@ var CalendarHeatmap = /** @class */ (function () {
             .append('rect')
             .attr('class', 'item item-block-rect')
             .attr('x', function (d) {
-            var /** @type {?} */ total = parseInt(d3.select(this.parentNode).attr('total'));
-            var /** @type {?} */ offset = parseInt(d3.select(this.parentNode).attr('offset'));
+            var total = parseInt(d3.select(this.parentNode).attr('total'));
+            var offset = parseInt(d3.select(this.parentNode).attr('offset'));
             itemScale.domain([0, total]);
             d3.select(this.parentNode).attr('offset', offset + itemScale(d.value));
             return offset;
         })
             .attr('width', function (d) {
-            var /** @type {?} */ total = parseInt(d3.select(this.parentNode).attr('total'));
+            var total = parseInt(d3.select(this.parentNode).attr('total'));
             itemScale.domain([0, total]);
             return Math.max((itemScale(d.value) - item_gutter), 1);
         })
@@ -1203,28 +1193,28 @@ var CalendarHeatmap = /** @class */ (function () {
             return Math.min(dayScale.bandwidth(), _this.max_block_height);
         })
             .attr('fill', function (d) {
-            var /** @type {?} */ color = d3.scaleLinear()
+            var color = d3.scaleLinear()
                 .range(['#ffffff', _this.color])
                 .domain([-0.15 * max_value, max_value]);
             return color(d.value) || '#ff4500';
         })
             .style('opacity', 0)
-            .on('mouseover', function (d) {
+            .on('mouseover', function (event, d) {
             if (_this.in_transition) {
                 return;
             }
             // Get date from the parent node
-            var /** @type {?} */ date = new Date(d3.select(d3.event.currentTarget.parentNode).attr('date'));
+            var date = new Date(d3.select(event.currentTarget.parentNode).attr('date'));
             // Construct tooltip
-            var /** @type {?} */ tooltip_html = _this.buildWeekTooltip([d, date]);
+            var tooltip_html = _this.buildWeekTooltip([d, date]);
             // Calculate tooltip position
-            var /** @type {?} */ total = parseInt(d3.select(d3.event.currentTarget.parentNode).attr('total'));
+            var total = parseInt(d3.select(event.currentTarget.parentNode).attr('total'));
             itemScale.domain([0, total]);
-            var /** @type {?} */ x = parseInt(d3.select(d3.event.currentTarget).attr('x')) + _this.tooltip_padding * 5;
+            var x = parseInt(d3.select(event.currentTarget).attr('x')) + _this.tooltip_padding * 5;
             while (_this.width - x < (_this.tooltip_width + _this.tooltip_padding * 3)) {
                 x -= 10;
             }
-            var /** @type {?} */ y = dayScale(moment(date).weekday().toString()) + _this.tooltip_padding;
+            var y = dayScale(moment(date).weekday().toString()) + _this.tooltip_padding;
             // Show tooltip
             _this.tooltip.html(tooltip_html)
                 .style('left', x + 'px')
@@ -1253,7 +1243,7 @@ var CalendarHeatmap = /** @class */ (function () {
             if (transition.empty()) {
                 callback();
             }
-            var /** @type {?} */ n = 0;
+            var n = 0;
             transition
                 .each(function () { ++n; })
                 .on('end', function () {
@@ -1321,7 +1311,7 @@ var CalendarHeatmap = /** @class */ (function () {
             if (_this.in_transition) {
                 return;
             }
-            var /** @type {?} */ selected_day = moment(d);
+            var selected_day = moment(d);
             _this.items.selectAll('.item-block-week')
                 .transition()
                 .duration(_this.transition_duration)
@@ -1346,7 +1336,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Draw day overview
-     * @return {?}
      */
     CalendarHeatmap.prototype.drawDayOverview = function () {
         var _this = this;
@@ -1358,11 +1347,11 @@ var CalendarHeatmap = /** @class */ (function () {
         if (!Object.keys(this.selected).length) {
             this.selected = this.data[this.data.length - 1];
         }
-        var /** @type {?} */ project_labels = this.selected.summary.map(function (project) { return project.name; });
-        var /** @type {?} */ projectScale = d3.scaleBand()
+        var project_labels = this.selected.summary.map(function (project) { return project.name; });
+        var projectScale = d3.scaleBand()
             .rangeRound([this.label_padding, this.height])
             .domain(project_labels);
-        var /** @type {?} */ itemScale = d3.scaleTime()
+        var itemScale = d3.scaleTime()
             .range([this.label_padding * 2, this.width])
             .domain([moment(this.selected.date).startOf('day'), moment(this.selected.date).endOf('day')]);
         this.items.selectAll('.item-block').remove();
@@ -1378,7 +1367,7 @@ var CalendarHeatmap = /** @class */ (function () {
             return (projectScale(d.name) + projectScale.bandwidth() / 2) - 15;
         })
             .attr('width', function (d) {
-            var /** @type {?} */ end = itemScale(d3.timeSecond.offset(moment(d.date).toDate(), d.value));
+            var end = itemScale(d3.timeSecond.offset(moment(d.date).toDate(), d.value));
             return Math.max((end - itemScale(moment(d.date))), 1);
         })
             .attr('height', function () {
@@ -1393,13 +1382,13 @@ var CalendarHeatmap = /** @class */ (function () {
                 return;
             }
             // Construct tooltip
-            var /** @type {?} */ tooltip_html = _this.buildDayTooltip(d);
+            var tooltip_html = _this.buildDayTooltip(d);
             // Calculate tooltip position
-            var /** @type {?} */ x = d.value * 100 / (60 * 60 * 24) + itemScale(moment(d.date));
+            var x = d.value * 100 / (60 * 60 * 24) + itemScale(moment(d.date));
             while (_this.width - x < (_this.tooltip_width + _this.tooltip_padding * 3)) {
                 x -= 10;
             }
-            var /** @type {?} */ y = projectScale(d.name) + _this.tooltip_padding;
+            var y = projectScale(d.name) + _this.tooltip_padding;
             // Show tooltip
             _this.tooltip.html(tooltip_html)
                 .style('left', x + 'px')
@@ -1433,7 +1422,7 @@ var CalendarHeatmap = /** @class */ (function () {
             if (transition.empty()) {
                 callback();
             }
-            var /** @type {?} */ n = 0;
+            var n = 0;
             transition
                 .each(function () { ++n; })
                 .on('end', function () {
@@ -1445,8 +1434,8 @@ var CalendarHeatmap = /** @class */ (function () {
             _this.in_transition = false;
         });
         // Add time labels
-        var /** @type {?} */ timeLabels = d3.timeHours(moment(this.selected.date).startOf('day').toDate(), moment(this.selected.date).endOf('day').toDate());
-        var /** @type {?} */ timeScale = d3.scaleTime()
+        var timeLabels = d3.timeHours(moment(this.selected.date).startOf('day').toDate(), moment(this.selected.date).endOf('day').toDate());
+        var timeScale = d3.scaleTime()
             .range([this.label_padding * 2, this.width])
             .domain([0, timeLabels.length]);
         this.labels.selectAll('.label-time').remove();
@@ -1467,14 +1456,14 @@ var CalendarHeatmap = /** @class */ (function () {
             if (_this.in_transition) {
                 return;
             }
-            var /** @type {?} */ selected = itemScale(moment(d));
+            var selected = itemScale(moment(d));
             _this.items.selectAll('.item-block')
                 .transition()
                 .duration(_this.transition_duration)
                 .ease(d3.easeLinear)
                 .style('opacity', function (d) {
-                var /** @type {?} */ start = itemScale(moment(d.date));
-                var /** @type {?} */ end = itemScale(moment(d.date).add(d.value, 'seconds'));
+                var start = itemScale(moment(d.date));
+                var end = itemScale(moment(d.date).add(d.value, 'seconds'));
                 return (selected >= start && selected <= end) ? 1 : 0.1;
             });
         })
@@ -1489,7 +1478,7 @@ var CalendarHeatmap = /** @class */ (function () {
                 .style('opacity', 0.5);
         });
         // Add project labels
-        var /** @type {?} */ label_padding = this.label_padding;
+        var label_padding = this.label_padding;
         this.labels.selectAll('.label-project').remove();
         this.labels.selectAll('.label-project')
             .data(project_labels)
@@ -1509,7 +1498,7 @@ var CalendarHeatmap = /** @class */ (function () {
         })
             .text(function (d) { return _this.projectLabel(d); })
             .each(function (d, i) {
-            var /** @type {?} */ obj = d3.select(this), /** @type {?} */ text_length = obj.node().getComputedTextLength(), /** @type {?} */ text = obj.text();
+            var obj = d3.select(this), text_length = obj.node().getComputedTextLength(), text = obj.text();
             while (text_length > (label_padding * 1.5) && text.length > 0) {
                 text = text.slice(0, -1);
                 obj.text(text + '...');
@@ -1544,21 +1533,18 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Helper function to calculate item position on the x-axis
-     * @param {?} d object
-     * @param {?} start_of_year
-     * @return {?}
+     * @param d object
      */
     CalendarHeatmap.prototype.calcItemX = function (d, start_of_year) {
-        var /** @type {?} */ date = moment(d.date);
-        var /** @type {?} */ dayIndex = Math.round((+date - +moment(start_of_year).startOf('week')) / 86400000);
-        var /** @type {?} */ colIndex = Math.trunc(dayIndex / 7);
+        var date = moment(d.date);
+        var dayIndex = Math.round((+date - +moment(start_of_year).startOf('week')) / 86400000);
+        var colIndex = Math.trunc(dayIndex / 7);
         return colIndex * (this.item_size + this.gutter) + this.label_padding;
     };
     ;
     /**
      * Helper function to calculate item position on the y-axis
-     * @param {?} d object
-     * @return {?}
+     * @param d object
      */
     CalendarHeatmap.prototype.calcItemY = function (d) {
         return this.label_padding + moment(d.date).weekday() * (this.item_size + this.gutter);
@@ -1566,9 +1552,8 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Helper function to calculate item size
-     * @param {?} d object
-     * @param {?} max number
-     * @return {?}
+     * @param d object
+     * @param max number
      */
     CalendarHeatmap.prototype.calcItemSize = function (d, max) {
         if (max <= 0) {
@@ -1579,12 +1564,11 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Draw the button for navigation purposes
-     * @return {?}
      */
     CalendarHeatmap.prototype.drawButton = function () {
         var _this = this;
         this.buttons.selectAll('.button').remove();
-        var /** @type {?} */ button = this.buttons.append('g')
+        var button = this.buttons.append('g')
             .attr('class', 'button button-back')
             .style('opacity', 0)
             .on('click', function () {
@@ -1635,7 +1619,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Transition and remove items and labels related to global overview
-     * @return {?}
      */
     CalendarHeatmap.prototype.removeGlobalOverview = function () {
         this.items.selectAll('.item-block-year')
@@ -1649,7 +1632,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Transition and remove items and labels related to year overview
-     * @return {?}
      */
     CalendarHeatmap.prototype.removeYearOverview = function () {
         this.items.selectAll('.item-circle')
@@ -1665,7 +1647,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Transition and remove items and labels related to month overview
-     * @return {?}
      */
     CalendarHeatmap.prototype.removeMonthOverview = function () {
         var _this = this;
@@ -1685,7 +1666,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Transition and remove items and labels related to week overview
-     * @return {?}
      */
     CalendarHeatmap.prototype.removeWeekOverview = function () {
         var _this = this;
@@ -1705,7 +1685,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Transition and remove items and labels related to daily overview
-     * @return {?}
      */
     CalendarHeatmap.prototype.removeDayOverview = function () {
         var _this = this;
@@ -1725,7 +1704,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Helper function to hide the tooltip
-     * @return {?}
      */
     CalendarHeatmap.prototype.hideTooltip = function () {
         this.tooltip.transition()
@@ -1736,7 +1714,6 @@ var CalendarHeatmap = /** @class */ (function () {
     ;
     /**
      * Helper function to hide the back button
-     * @return {?}
      */
     CalendarHeatmap.prototype.hideBackButton = function () {
         this.buttons.selectAll('.button')
@@ -1747,144 +1724,62 @@ var CalendarHeatmap = /** @class */ (function () {
             .remove();
     };
     ;
-    CalendarHeatmap.decorators = [
-        { type: Component, args: [{
-                    selector: 'calendar-heatmap',
-                    template: "<div #root></div>",
-                    styles: ["\n    :host {\n      position: relative;\n      user-select: none;\n      -ms-user-select: none;\n      -moz-user-select: none;\n      -webkit-user-select: none;\n    }\n    :host >>> .item {\n      cursor: pointer;\n    }\n    :host >>> .label {\n      cursor: pointer;\n      fill: rgb(170, 170, 170);\n      font-family: Helvetica, arial, 'Open Sans', sans-serif;\n    }\n    :host >>> .button {\n      cursor: pointer;\n      fill: transparent;\n      stroke-width: 2;\n      stroke: rgb(170, 170, 170);\n    }\n    :host >>> .button text {\n      stroke-width: 1;\n      text-anchor: middle;\n      fill: rgb(170, 170, 170);\n    }\n    :host >>> .heatmap-tooltip {\n      pointer-events: none;\n      position: absolute;\n      z-index: 9999;\n      width: 250px;\n      max-width: 250px;\n      overflow: hidden;\n      padding: 15px;\n      font-size: 12px;\n      line-height: 14px;\n      color: rgb(51, 51, 51);\n      font-family: Helvetica, arial, 'Open Sans', sans-serif;\n      background: rgba(255, 255, 255, 0.75);\n    }\n    :host >>> .heatmap-tooltip .header strong {\n      display: inline-block;\n      width: 250px;\n    }\n    :host >>> .heatmap-tooltip span {\n      display: inline-block;\n      width: 50%;\n      padding-right: 10px;\n      box-sizing: border-box;\n    }\n    :host >>> .heatmap-tooltip span,\n    :host >>> .heatmap-tooltip .header strong {\n      white-space: nowrap;\n      overflow: hidden;\n      text-overflow: ellipsis;\n    }\n  "],
-                },] },
-    ];
-    /**
-     * @nocollapse
-     */
-    CalendarHeatmap.ctorParameters = function () { return []; };
-    CalendarHeatmap.propDecorators = {
-        'element': [{ type: ViewChild, args: ['root',] },],
-        'data': [{ type: Input },],
-        'color': [{ type: Input },],
-        'overview': [{ type: Input },],
-        'formatTime': [{ type: Input },],
-        'projectLabel': [{ type: Input },],
-        'yearLabel': [{ type: Input },],
-        'monthLabel': [{ type: Input },],
-        'weekLabel': [{ type: Input },],
-        'dayOfWeekLabel': [{ type: Input },],
-        'timeLabel': [{ type: Input },],
-        'buildGlobalTooltip': [{ type: Input },],
-        'buildYearTooltip': [{ type: Input },],
-        'buildMonthTooltip': [{ type: Input },],
-        'buildWeekTooltip': [{ type: Input },],
-        'buildDayTooltip': [{ type: Input },],
-        'handler': [{ type: Output },],
-        'onChange': [{ type: Output },],
-        'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
-    };
+    CalendarHeatmap.ɵfac = function CalendarHeatmap_Factory(t) { return new (t || CalendarHeatmap)(); };
+    CalendarHeatmap.ɵcmp = /*@__PURE__*/ i0.ɵɵdefineComponent({ type: CalendarHeatmap, selectors: [["calendar-heatmap"]], viewQuery: function CalendarHeatmap_Query(rf, ctx) { if (rf & 1) {
+            i0.ɵɵviewQuery(_c0, 5);
+        } if (rf & 2) {
+            var _t = void 0;
+            i0.ɵɵqueryRefresh(_t = i0.ɵɵloadQuery()) && (ctx.element = _t.first);
+        } }, hostBindings: function CalendarHeatmap_HostBindings(rf, ctx) { if (rf & 1) {
+            i0.ɵɵlistener("resize", function CalendarHeatmap_resize_HostBindingHandler($event) { return ctx.onResize($event); }, false, i0.ɵɵresolveWindow);
+        } }, inputs: { data: "data", color: "color", overview: "overview", formatTime: "formatTime", projectLabel: "projectLabel", yearLabel: "yearLabel", monthLabel: "monthLabel", weekLabel: "weekLabel", dayOfWeekLabel: "dayOfWeekLabel", timeLabel: "timeLabel", buildGlobalTooltip: "buildGlobalTooltip", buildYearTooltip: "buildYearTooltip", buildMonthTooltip: "buildMonthTooltip", buildWeekTooltip: "buildWeekTooltip", buildDayTooltip: "buildDayTooltip" }, outputs: { handler: "handler", onChange: "onChange" }, features: [i0.ɵɵNgOnChangesFeature], decls: 2, vars: 0, consts: [["root", ""]], template: function CalendarHeatmap_Template(rf, ctx) { if (rf & 1) {
+            i0.ɵɵelement(0, "div", null, 0);
+        } }, styles: ["[_nghost-%COMP%] {\n      position: relative;\n      user-select: none;\n      -ms-user-select: none;\n      -moz-user-select: none;\n      -webkit-user-select: none;\n    }\n    [_nghost-%COMP%]     .item {\n      cursor: pointer;\n    }\n    [_nghost-%COMP%]     .label {\n      cursor: pointer;\n      fill: rgb(170, 170, 170);\n      font-family: Helvetica, arial, 'Open Sans', sans-serif;\n    }\n    [_nghost-%COMP%]     .button {\n      cursor: pointer;\n      fill: transparent;\n      stroke-width: 2;\n      stroke: rgb(170, 170, 170);\n    }\n    [_nghost-%COMP%]     .button text {\n      stroke-width: 1;\n      text-anchor: middle;\n      fill: rgb(170, 170, 170);\n    }\n    [_nghost-%COMP%]     .heatmap-tooltip {\n      pointer-events: none;\n      position: absolute;\n      z-index: 9999;\n      width: 250px;\n      max-width: 250px;\n      overflow: hidden;\n      padding: 15px;\n      font-size: 12px;\n      line-height: 14px;\n      color: rgb(51, 51, 51);\n      font-family: Helvetica, arial, 'Open Sans', sans-serif;\n      background: rgba(255, 255, 255, 0.75);\n    }\n    [_nghost-%COMP%]     .heatmap-tooltip .header strong {\n      display: inline-block;\n      width: 250px;\n    }\n    [_nghost-%COMP%]     .heatmap-tooltip span {\n      display: inline-block;\n      width: 50%;\n      padding-right: 10px;\n      box-sizing: border-box;\n    }\n    [_nghost-%COMP%]     .heatmap-tooltip span, [_nghost-%COMP%]     .heatmap-tooltip .header strong {\n      white-space: nowrap;\n      overflow: hidden;\n      text-overflow: ellipsis;\n    }"] });
     return CalendarHeatmap;
 }());
 export { CalendarHeatmap };
-function CalendarHeatmap_tsickle_Closure_declarations() {
-    /** @type {?} */
-    CalendarHeatmap.decorators;
-    /**
-     * @nocollapse
-     * @type {?}
-     */
-    CalendarHeatmap.ctorParameters;
-    /** @type {?} */
-    CalendarHeatmap.propDecorators;
-    /** @type {?} */
-    CalendarHeatmap.prototype.element;
-    /** @type {?} */
-    CalendarHeatmap.prototype.data;
-    /** @type {?} */
-    CalendarHeatmap.prototype.color;
-    /** @type {?} */
-    CalendarHeatmap.prototype.overview;
-    /**
-     * Helper function to convert seconds to a human readable format
-     * \@param seconds Integer
-     * @type {?}
-     */
-    CalendarHeatmap.prototype.formatTime;
-    /**
-     * Function for project label
-     * @type {?}
-     */
-    CalendarHeatmap.prototype.projectLabel;
-    /**
-     * Function for year label
-     * @type {?}
-     */
-    CalendarHeatmap.prototype.yearLabel;
-    /**
-     * Function for month label
-     * @type {?}
-     */
-    CalendarHeatmap.prototype.monthLabel;
-    /**
-     * Function for week label
-     * @type {?}
-     */
-    CalendarHeatmap.prototype.weekLabel;
-    /**
-     * Function for day of week label
-     * @type {?}
-     */
-    CalendarHeatmap.prototype.dayOfWeekLabel;
-    /**
-     * Function for time label
-     * @type {?}
-     */
-    CalendarHeatmap.prototype.timeLabel;
-    /** @type {?} */
-    CalendarHeatmap.prototype.buildGlobalTooltip;
-    /** @type {?} */
-    CalendarHeatmap.prototype.buildYearTooltip;
-    /** @type {?} */
-    CalendarHeatmap.prototype.buildMonthTooltip;
-    /** @type {?} */
-    CalendarHeatmap.prototype.buildWeekTooltip;
-    /** @type {?} */
-    CalendarHeatmap.prototype.buildDayTooltip;
-    /** @type {?} */
-    CalendarHeatmap.prototype.handler;
-    /** @type {?} */
-    CalendarHeatmap.prototype.onChange;
-    /** @type {?} */
-    CalendarHeatmap.prototype.gutter;
-    /** @type {?} */
-    CalendarHeatmap.prototype.item_gutter;
-    /** @type {?} */
-    CalendarHeatmap.prototype.width;
-    /** @type {?} */
-    CalendarHeatmap.prototype.height;
-    /** @type {?} */
-    CalendarHeatmap.prototype.item_size;
-    /** @type {?} */
-    CalendarHeatmap.prototype.label_padding;
-    /** @type {?} */
-    CalendarHeatmap.prototype.max_block_height;
-    /** @type {?} */
-    CalendarHeatmap.prototype.transition_duration;
-    /** @type {?} */
-    CalendarHeatmap.prototype.in_transition;
-    /** @type {?} */
-    CalendarHeatmap.prototype.tooltip_width;
-    /** @type {?} */
-    CalendarHeatmap.prototype.tooltip_padding;
-    /** @type {?} */
-    CalendarHeatmap.prototype.history;
-    /** @type {?} */
-    CalendarHeatmap.prototype.selected;
-    /** @type {?} */
-    CalendarHeatmap.prototype.svg;
-    /** @type {?} */
-    CalendarHeatmap.prototype.items;
-    /** @type {?} */
-    CalendarHeatmap.prototype.labels;
-    /** @type {?} */
-    CalendarHeatmap.prototype.buttons;
-    /** @type {?} */
-    CalendarHeatmap.prototype.tooltip;
-}
+(function () { (typeof ngDevMode === "undefined" || ngDevMode) && i0.ɵsetClassMetadata(CalendarHeatmap, [{
+        type: Component,
+        args: [{ selector: 'calendar-heatmap', template: "<div #root></div>", styles: ["\n    :host {\n      position: relative;\n      user-select: none;\n      -ms-user-select: none;\n      -moz-user-select: none;\n      -webkit-user-select: none;\n    }\n    :host >>> .item {\n      cursor: pointer;\n    }\n    :host >>> .label {\n      cursor: pointer;\n      fill: rgb(170, 170, 170);\n      font-family: Helvetica, arial, 'Open Sans', sans-serif;\n    }\n    :host >>> .button {\n      cursor: pointer;\n      fill: transparent;\n      stroke-width: 2;\n      stroke: rgb(170, 170, 170);\n    }\n    :host >>> .button text {\n      stroke-width: 1;\n      text-anchor: middle;\n      fill: rgb(170, 170, 170);\n    }\n    :host >>> .heatmap-tooltip {\n      pointer-events: none;\n      position: absolute;\n      z-index: 9999;\n      width: 250px;\n      max-width: 250px;\n      overflow: hidden;\n      padding: 15px;\n      font-size: 12px;\n      line-height: 14px;\n      color: rgb(51, 51, 51);\n      font-family: Helvetica, arial, 'Open Sans', sans-serif;\n      background: rgba(255, 255, 255, 0.75);\n    }\n    :host >>> .heatmap-tooltip .header strong {\n      display: inline-block;\n      width: 250px;\n    }\n    :host >>> .heatmap-tooltip span {\n      display: inline-block;\n      width: 50%;\n      padding-right: 10px;\n      box-sizing: border-box;\n    }\n    :host >>> .heatmap-tooltip span,\n    :host >>> .heatmap-tooltip .header strong {\n      white-space: nowrap;\n      overflow: hidden;\n      text-overflow: ellipsis;\n    }\n  "] }]
+    }], null, { element: [{
+            type: ViewChild,
+            args: ['root']
+        }], data: [{
+            type: Input
+        }], color: [{
+            type: Input
+        }], overview: [{
+            type: Input
+        }], formatTime: [{
+            type: Input
+        }], projectLabel: [{
+            type: Input
+        }], yearLabel: [{
+            type: Input
+        }], monthLabel: [{
+            type: Input
+        }], weekLabel: [{
+            type: Input
+        }], dayOfWeekLabel: [{
+            type: Input
+        }], timeLabel: [{
+            type: Input
+        }], buildGlobalTooltip: [{
+            type: Input
+        }], buildYearTooltip: [{
+            type: Input
+        }], buildMonthTooltip: [{
+            type: Input
+        }], buildWeekTooltip: [{
+            type: Input
+        }], buildDayTooltip: [{
+            type: Input
+        }], handler: [{
+            type: Output
+        }], onChange: [{
+            type: Output
+        }], onResize: [{
+            type: HostListener,
+            args: ['window:resize', ['$event']]
+        }] }); })();
 //# sourceMappingURL=calendar-heatmap.component.js.map

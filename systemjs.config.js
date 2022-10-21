@@ -39,23 +39,23 @@
       app: 'app',
 
       // angular bundles
-      '@angular/core': 'npm:@angular/core@4.0.0/bundles/core.umd.js',
-      '@angular/common': 'npm:@angular/common@4.0.0/bundles/common.umd.js',
-      '@angular/compiler': 'npm:@angular/compiler@4.0.0/bundles/compiler.umd.js',
-      '@angular/platform-browser': 'npm:@angular/platform-browser@4.0.0/bundles/platform-browser.umd.js',
-      '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic@4.0.0/bundles/platform-browser-dynamic.umd.js',
-      '@angular/http': 'npm:@angular/http@4.0.0/bundles/http.umd.js',
-      '@angular/router': 'npm:@angular/router@4.0.0/bundles/router.umd.js',
-      '@angular/forms': 'npm:@angular/forms@4.0.0/bundles/forms.umd.js',
+      '@angular/core': 'npm:@angular/core@14.2.7/bundles/core.umd.js',
+      '@angular/common': 'npm:@angular/common@14.2.7/bundles/common.umd.js',
+      '@angular/compiler': 'npm:@angular/compiler@14.2.7/bundles/compiler.umd.js',
+      '@angular/platform-browser': 'npm:@angular/platform-browser@14.2.7/bundles/platform-browser.umd.js',
+      '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic@14.2.7/bundles/platform-browser-dynamic.umd.js',
+      '@angular/http': 'npm:@angular/http@14.2.7/bundles/http.umd.js',
+      '@angular/router': 'npm:@angular/router@14.2.7/bundles/router.umd.js',
+      '@angular/forms': 'npm:@angular/forms@14.2.7/bundles/forms.umd.js',
 
       // other libraries
       'rxjs': 'npm:rxjs@5.0.1',
-      'ts': 'npm:plugin-typescript@5.2.7/lib/plugin.js',
-      'typescript': 'npm:typescript@2.0.10/lib/typescript.js',
+      'ts': 'npm:plugin-typescript@8.0.0/lib/plugin.js',
+      'typescript': 'npm:typescript@4.8.4/lib/typescript.js',
 
       // package dependencies
-      'moment': 'npm:moment@2.19.1/min/moment.min.js',
-      'd3': 'npm:d3@4.11.0/build/d3.min.js',
+      'moment': 'npm:moment@2.29.4/min/moment.min.js',
+      'd3': 'npm:d3@7.6.1/build/d3.min.js',
 
       // calendar heatmap
       'angular2-calendar-heatmap': 'src/calendar-heatmap.component.ts',

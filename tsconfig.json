@@ -21,9 +21,13 @@
   "angularCompilerOptions": {
     "strictMetadataEmit": true,
     "skipTemplateCodegen": true,
-    "annotateForClosureCompiler": true,
+    "annotateForClosureCompiler": false,
     "flatModuleOutFile": "calendar-heatmap.js",
-    "flatModuleId": "angular2-calendar-heatmap"
+    "flatModuleId": "angular2-calendar-heatmap",
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
   },
   "files": [
     "src/calendar-heatmap.component.ts"

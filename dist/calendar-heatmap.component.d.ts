@@ -1,11 +1,12 @@
 import { EventEmitter, ElementRef } from '@angular/core';
+import * as i0 from "@angular/core";
 export declare type UnaryFunction<T, R> = (source: T) => R;
 export declare enum OverviewType {
     global = 0,
     year = 1,
     month = 2,
     week = 3,
-    day = 4,
+    day = 4
 }
 export interface CalendarHeatmapItem {
     date?: Date;
@@ -183,4 +184,6 @@ export declare class CalendarHeatmap {
      * Helper function to hide the back button
      */
     hideBackButton(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<CalendarHeatmap, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CalendarHeatmap, "calendar-heatmap", never, { "data": "data"; "color": "color"; "overview": "overview"; "formatTime": "formatTime"; "projectLabel": "projectLabel"; "yearLabel": "yearLabel"; "monthLabel": "monthLabel"; "weekLabel": "weekLabel"; "dayOfWeekLabel": "dayOfWeekLabel"; "timeLabel": "timeLabel"; "buildGlobalTooltip": "buildGlobalTooltip"; "buildYearTooltip": "buildYearTooltip"; "buildMonthTooltip": "buildMonthTooltip"; "buildWeekTooltip": "buildWeekTooltip"; "buildDayTooltip": "buildDayTooltip"; }, { "handler": "handler"; "onChange": "onChange"; }, never, never, false>;
 }

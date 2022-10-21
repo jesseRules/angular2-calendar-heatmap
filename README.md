@@ -4,42 +4,44 @@ This [d3.js](https://d3js.org/) heatmap representing time series data is used to
 
 Includes a global overview of multiple years and visualizations of year, month, week and day overview with zoom for details-on-demand.
 
-Inspired by [Github's contribution graph](https://help.github.com/articles/viewing-contributions-on-your-profile/#contributions-calendar)
+Inspired by [Gleb1](https://github.com/g1eb/angular2-calendar-heatmap)
+
+Looks to be abandoned, updated versioning. Fixed minor bugs. Republishing on NPM.
 
 Based on [Calendar View](https://bl.ocks.org/mbostock/4063318) by [Mike Bostock](https://github.com/mbostock)  
 Aaand [D3.js Calendar Heatmap](https://github.com/DKirwan/calendar-heatmap) by [Darragh Kirwan](https://github.com/DKirwan)
 
 ## Demo
-Click <a href="https://rawgit.com/g1eb/angular2-calendar-heatmap/master/" target="_blank">here</a> for a live demo.
+Click <a href="https://rawgit.com/jesseRules/angular2-calendar-heatmap/master/" target="_blank">here</a> for a live demo.
 
 ### Global overview
-[![Angular component for d3.js calendar heatmap - global overview](https://raw.githubusercontent.com/g1eb/angular2-calendar-heatmap/master/images/screenshot_global_overview.png)](https://rawgit.com/g1eb/angular2-calendar-heatmap/master/)
+[![Angular component for d3.js calendar heatmap - global overview](https://rawgit.com/jesseRules/angular2-calendar-heatmap/master/images/screenshot_global_overview.png)](https://rawgit.com/g1eb/angular2-calendar-heatmap/master/)
 
 ### Year overview
-[![Angular component for d3.js calendar heatmap - year overview](https://raw.githubusercontent.com/g1eb/angular2-calendar-heatmap/master/images/screenshot_year_overview.png)](https://rawgit.com/g1eb/angular2-calendar-heatmap/master/)
+[![Angular component for d3.js calendar heatmap - year overview](https://rawgit.com/jesseRules/angular2-calendar-heatmap/master/images/screenshot_year_overview.png)](https://rawgit.com/g1eb/angular2-calendar-heatmap/master/)
 
 ### Month overview
-[![Angular component for d3.js calendar heatmap - month overview](https://raw.githubusercontent.com/g1eb/angular2-calendar-heatmap/master/images/screenshot_month_overview.png)](https://rawgit.com/g1eb/angular2-calendar-heatmap/master/)
+[![Angular component for d3.js calendar heatmap - month overview](https://rawgit.com/jesseRules/angular2-calendar-heatmap/master/images/screenshot_month_overview.png)](https://rawgit.com/g1eb/angular2-calendar-heatmap/master/)
 
 ### Week overview
-[![Angular component for d3.js calendar heatmap - week overview](https://raw.githubusercontent.com/g1eb/angular2-calendar-heatmap/master/images/screenshot_week_overview.png)](https://rawgit.com/g1eb/angular2-calendar-heatmap/master/)
+[![Angular component for d3.js calendar heatmap - week overview](https://rawgit.com/jesseRules/angular2-calendar-heatmap/master/images/screenshot_week_overview.png)](https://rawgit.com/g1eb/angular2-calendar-heatmap/master/)
 
 ### Day overview
-[![Angular component for d3.js calendar heatmap - day overview](https://raw.githubusercontent.com/g1eb/angular2-calendar-heatmap/master/images/screenshot_day_overview.png)](https://rawgit.com/g1eb/angular2-calendar-heatmap/master/)
+[![Angular component for d3.js calendar heatmap - day overview](https://rawgit.com/jesseRules/angular2-calendar-heatmap/master/images/screenshot_day_overview.png)](https://rawgit.com/g1eb/angular2-calendar-heatmap/master/)
 
 ## Installation
 
-1) Install 'angular2-calendar-heatmap' with npm
+1) Install 'ngx-calendar-heatmap' with npm
 
 ```
-npm install angular2-calendar-heatmap
+npm install ngx-calendar-heatmap
 ```
 
 2) Import CalendarHeatmap component in your angular module
 
 
 ```javascript
-import { CalendarHeatmap } from 'angular2-calendar-heatmap';
+import { CalendarHeatmap } from 'ngx-calendar-heatmap';
 
 declarations: [ ...... , CalendarHeatmap ],
 ```

@@ -748,11 +748,11 @@ export class CalendarHeatmap {
         this.overview = OverviewType.day;
         this.drawChart();
       })
-      .on('mouseover', (d: any) => {
+      .on('mouseover', (event: any, d: any) => {
         if (this.in_transition) { return; }
 
         // Pulsating animation
-        var circle = d3.select(d3.event.currentTarget);
+        var circle = d3.select(event.currentTarget);
         var repeat = () => {
           circle.transition()
             .duration(this.transition_duration)
@@ -803,11 +803,11 @@ export class CalendarHeatmap {
           .ease(d3.easeLinear)
           .style('opacity', 1);
       })
-      .on('mouseout', () => {
+      .on('mouseout', (event: any) => {
         if (this.in_transition) { return; }
 
         // Set circle radius back to what it's supposed to be
-        d3.select(d3.event.currentTarget).transition()
+        d3.select(event.currentTarget).transition()
           .duration(this.transition_duration / 2)
           .ease(d3.easeLinear)
           .attr('x', (d: any) => {
@@ -1092,11 +1092,11 @@ export class CalendarHeatmap {
         return color(d.value) || '#ff4500';
       })
       .style('opacity', 0)
-      .on('mouseover', (d: CalendarHeatmapDataSummary) => {
+      .on('mouseover', (event: any, d: CalendarHeatmapDataSummary) => {
         if (this.in_transition) { return; }
 
         // Get date from the parent node
-        var date = new Date(d3.select(d3.event.currentTarget.parentNode).attr('date'));
+        var date = new Date(d3.select(event.currentTarget.parentNode).attr('date'));
 
         // Construct tooltip
         var tooltip_html = this.buildMonthTooltip([d, date]);
@@ -1370,19 +1370,19 @@ export class CalendarHeatmap {
         return color(d.value) || '#ff4500';
       })
       .style('opacity', 0)
-      .on('mouseover', (d: CalendarHeatmapDataSummary) => {
+      .on('mouseover', (event: any, d: CalendarHeatmapDataSummary) => {
         if (this.in_transition) { return; }
 
         // Get date from the parent node
-        var date = new Date(d3.select(d3.event.currentTarget.parentNode).attr('date'));
+        var date = new Date(d3.select(event.currentTarget.parentNode).attr('date'));
 
         // Construct tooltip
         var tooltip_html = this.buildWeekTooltip([d, date]);
 
         // Calculate tooltip position
-        var total = parseInt(d3.select(d3.event.currentTarget.parentNode).attr('total'));
+        var total = parseInt(d3.select(event.currentTarget.parentNode).attr('total'));
         itemScale.domain([0, total]);
-        var x = parseInt(d3.select(d3.event.currentTarget).attr('x')) + this.tooltip_padding * 5;
+        var x = parseInt(d3.select(event.currentTarget).attr('x')) + this.tooltip_padding * 5;
         while (this.width - x < (this.tooltip_width + this.tooltip_padding * 3)) {
           x -= 10;
         }
